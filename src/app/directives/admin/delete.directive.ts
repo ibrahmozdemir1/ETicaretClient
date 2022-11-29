@@ -3,6 +3,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Rende
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDialogComponent, DeleteState } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { AlertifyService, MessagePosition, MessageType } from 'src/app/services/admin/alertify.service';
+import { DialogService } from 'src/app/services/common/dialog.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
 
 declare var $ : any;
@@ -16,7 +17,8 @@ export class DeleteDirective {
     private _renderer: Renderer2,
     public dialog: MatDialog,
     private alertify: AlertifyService,
-    private httpClientService: HttpClientService
+    private httpClientService: HttpClientService,
+    private dialogService: DialogService,
     ) {
       const img = _renderer.createElement("img");
       img.setAttribute("src","../../../../../assets/delete.png");
@@ -33,27 +35,31 @@ export class DeleteDirective {
 
     @HostListener("click")
     async onclick(){
-      this.openDialog(async () => {
-        const td : HTMLTableCellElement = this.element.nativeElement;
-        this.httpClientService.delete({
-          controller: this.controller
-        }, this.id).subscribe(data => {
-          $(td.parentElement).fadeOut(2000,() => {
-            this.callback.emit();
-            this.alertify.message("Ürün Başarıyla Silinmiştir.",{
+      this.dialogService.openDialog({
+        componentType: DeleteDialogComponent,
+        data: DeleteState.Yes,
+        afterClosed: async () => {
+          const td : HTMLTableCellElement = this.element.nativeElement;
+          this.httpClientService.delete({
+            controller: this.controller
+          }, this.id).subscribe(data => {
+            $(td.parentElement).fadeOut(2000,() => {
+              this.callback.emit();
+              this.alertify.message("Ürün Başarıyla Silinmiştir.",{
+                dismissOthers: true,
+                messageType: MessageType.Success,
+                position: MessagePosition.TopRight
+              })
+            });
+          },(errorReponse: HttpErrorResponse) => {
+            this.alertify.message("Ürün Silinemedi.",{
               dismissOthers: true,
-              messageType: MessageType.Success,
+              messageType: MessageType.Error,
               position: MessagePosition.TopRight
             })
-          });
-        },(errorReponse: HttpErrorResponse) => {
-          this.alertify.message("Ürün Silinemedi.",{
-            dismissOthers: true,
-            messageType: MessageType.Error,
-            position: MessagePosition.TopRight
-          })
-        });
-      });
+          });}
+        }
+      );
     }
 
     openDialog(afterClosed: any): void {

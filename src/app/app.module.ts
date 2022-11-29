@@ -12,10 +12,12 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { BaseComponent } from './base/base.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { FileUploadDialogComponent } from './dialogs/file-upload-dialog/file-upload-dialog.component';
+import { DialogModule } from '@angular/cdk/dialog';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,8 @@ import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.com
     MatSliderModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
+    DialogModule
   ],
   providers: [
     {provide: "baseUrl", useValue: "https://localhost:7220/api", multi: true}
