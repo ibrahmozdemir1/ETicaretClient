@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import {  firstValueFrom, lastValueFrom, Observable } from 'rxjs';
 import { Create_Product } from 'src/app/contracts/create_product';
 import { List_Product } from 'src/app/contracts/list_product';
+import { List_Product_Image } from 'src/app/contracts/list_product_image';
 import { HttpClientService } from '../http-client.service';
 
 @Injectable({
@@ -52,5 +53,25 @@ export class ProductserviceService {
     }, id)
 
     await firstValueFrom(deleteObs);
+  }
+
+  async readİmages(id: string): Promise<List_Product_Image[]>{
+    const getObservable: Observable<List_Product_Image[]> = this.httpClientService.get<List_Product_Image[]>({
+      action: "getproductimages",
+      controller: "product/"
+    },id);
+
+    return await firstValueFrom(getObservable);
+  }
+
+  async deleteImage(id: string, imageId: string){
+    const deleteObservable = this.httpClientService.delete({
+      action: "deleteproducimage",
+      controller: "product/",
+      queryString: `imageId=${imageId}`
+    }, id);
+
+    await firstValueFrom(deleteObservable);
+
   }
 }
