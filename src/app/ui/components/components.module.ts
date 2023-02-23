@@ -6,6 +6,8 @@ import { HomeModule } from './home/home.module';
 import { BasketModule } from './baskets/baskets.module';
 import { RegisterComponent } from './register/register.component';
 import { RegisterModule } from './register/register.module';
+import { LoginComponent } from './login/login.component';
+import { LoginModule } from './login/login.module';
 
 
 
@@ -15,6 +17,7 @@ import { RegisterModule } from './register/register.module';
   imports: [
     CommonModule,
     ProductsModule,
+    LoginModule,
     HomeModule,
     BasketModule,
     RegisterModule
