@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
 import { FileUploadDialogComponent } from './dialogs/file-upload-dialog/file-upload-dialog.component';
 import { DialogModule } from '@angular/cdk/dialog';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,13 @@ import { DialogModule } from '@angular/cdk/dialog';
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     HttpClientModule,
-    DialogModule
+    DialogModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem("accessToken"),
+        allowedDomains: ["localhost:4200"]
+      }
+    })
   ],
   providers: [
     {provide: "baseUrl", useValue: "https://localhost:7220/api", multi: true}
