@@ -17,7 +17,7 @@ import { LoginModule } from './login/login.module';
   imports: [
     CommonModule,
     ProductsModule,
-    LoginModule,
+    //LoginModule,
     HomeModule,
     BasketModule,
     RegisterModule

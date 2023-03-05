@@ -19,9 +19,9 @@
         <li><a routerLink = "products">Ürünler</a></li>
         <li><a routerLink = "register" *ngIf="!authService.isAuthenticated">Kayıt Ol</a></li>
         <li><a routerLink = "login" *ngIf="!authService.isAuthenticated">Giriş Yap</a></li>
-        <li><a  style="color: red" *ngIf="authService.isAuthenticated">Çıkış Yap</a></li>
+        <li><a (click)="signOut()" *ngIf="authService.isAuthenticated">Çıkış Yap</a></li>
         <li><a routerLink = "baskets">Sepet</a> </li>
-        <li> <a routerLink = "admin" (click)="signOut" cursor="pointer" *ngIf="authService.isAuthenticated">Yönetim Paneli</a></li>
+        <li> <a routerLink = "admin" *ngIf="authService.isAuthenticated">Yönetim Paneli</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
