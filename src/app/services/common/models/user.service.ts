@@ -27,7 +27,7 @@ export class UserService {
   async login(userNameOrEmail: string, password: string, callBackFunction?: () => void) : Promise<any>{
 
     const observable: Observable<any | TokenResponse> = this.httpClientService.post<any | TokenResponse>({
-      controller: "Users/",
+      controller: "auth/",
       action: "login",
     }, {userNameOrEmail, password})
 
@@ -47,7 +47,7 @@ export class UserService {
   async facebookLogin(user: SocialUser, func?: () => void) : Promise<any> {
     const observable: Observable<SocialUser | TokenResponse> = this.httpClientService.post({
       action:"facebook-login",
-      controller: "users/"
+      controller: "auth/"
     },user);
 
     const tokenResponse: TokenResponse = await firstValueFrom(observable) as TokenResponse;
@@ -67,7 +67,7 @@ export class UserService {
   async googleLogin(user: SocialUser, func?: () => void): Promise<any> {
     const observable: Observable<SocialUser | TokenResponse> = this.httpClientService.post<SocialUser | TokenResponse >({
       action:"google-login",
-      controller: "users/"
+      controller: "auth/"
     },user);
 
     const tokenResponse : TokenResponse = await firstValueFrom(observable) as TokenResponse;
