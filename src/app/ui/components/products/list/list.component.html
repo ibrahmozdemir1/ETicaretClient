@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="card" *ngFor="let product of products">
+    <img *ngIf="!product.productImageFiles.length" src="../../../../../assets/default.jpg" style="width:100%">
+    <img *ngIf="product.productImageFiles.length"  src="{{baseUrl.url}}{{product.imagePath}}"  style="width:100%">
+    <div class="container">
+      <h5 class="card-title">{{ product.name }}</h5>
+      <p class="card-text">Fiyat :{{ product.price |currency}} <br/> Stok: {{ product.stock }}</p>
+      <a href="#" class="btn btn-primary">Sepete Ekle</a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a class="page-link">{{currentPageNo}} / {{totalPageCount ? totalPageCount == null : 1 }}</a>
+        </li>
+      <li class="page-item">
+        <a class="page-link" [routerLink]="['/products', currentPageNo -1 <= 0 ? 1 : currentPageNo -1]">Önceki</a>
+      </li>
+      <li class="page-item" *ngFor="let pageNo of pageList" routerLinkActive="active">
+        <a class="page-link" [routerLink]="['/products', pageNo]">
+          {{ pageNo }}
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link"  [routerLink]="['/products', currentPageNo +1 >= totalPageCount ? totalPageCount : currentPageNo +1]">
+          Sonraki
+        </a>
+      </li>
+    </ul>
+    </nav>
+  </div>
+  <div class="col-md-4"></div>
+</div>
+
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 20%;
+  margin: 5px;
+  float: left;
+  border-radius: 5px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+img {
+  border-radius: 5px 5px 0 0;
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+
+  </style>
+
+

@@ -33,6 +33,7 @@ export class SelectProducImageDialogComponent extends BaseDialog<SelectProducIma
 
   async ngOnInit() {
     this.images = await this.productService.readİmages(this.data as string);
+    console.log(this.images);
   }
 
   async deleteImage(imageId: string){
@@ -42,6 +43,13 @@ export class SelectProducImageDialogComponent extends BaseDialog<SelectProducIma
       afterClosed: async () => {
         await this.productService.deleteImage(this.data as string,imageId);
       }
+    });
+  }
+
+  showCase(imageId: string){
+    debugger;
+    this.productService.changeShowcaseImage(imageId, this.data as string, () => {
+
     });
   }
 }
