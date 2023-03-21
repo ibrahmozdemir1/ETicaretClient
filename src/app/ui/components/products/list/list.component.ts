@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { param } from 'jquery';
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { BaseComponent, SpinnerType } from 'src/app/base/base.component';
 import { BaseUrl } from 'src/app/contracts/baseUrl';
+import { CreateBasketItem } from 'src/app/contracts/basket/Create_Basket_Item';
 import { List_Product } from 'src/app/contracts/list_product';
+import { BasketService } from 'src/app/services/common/models/basket.service';
 import { FileService } from 'src/app/services/common/models/file.service';
 import { ProductserviceService } from 'src/app/services/common/models/productservice.service';
+import { CustomtoastrService, ToastrMessageType, ToastrPosition } from 'src/app/services/ui/customtoastr.service';
 
 
 @Component({
@@ -12,12 +17,16 @@ import { ProductserviceService } from 'src/app/services/common/models/productser
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent extends BaseComponent implements OnInit {
 
   constructor(private productService: ProductserviceService,
     private activatedRoute: ActivatedRoute,
     private fileservice: FileService,
+    private basketService: BasketService,
+    spinner: NgxSpinnerService,
+    private toastrService: CustomtoastrService
     ){
+    super(spinner);
   }
 
   currentPageNo:number;
@@ -29,6 +38,23 @@ export class ListComponent implements OnInit {
   pageList: number[] = [];
   baseUrl: BaseUrl;
   products: List_Product[];
+
+  async addToBasket(product: List_Product){
+    this.showSpinner(SpinnerType.BallScaleMultiple);
+    let _basketItem: CreateBasketItem = new CreateBasketItem();
+
+    _basketItem.productId = product.id;
+    _basketItem.quantity = 1;
+    await this.basketService.add(_basketItem).then(_ => {
+      this.hideSpinner(SpinnerType.BallScaleMultiple);
+      this.toastrService.message("Ürün Sepete Eklendi","Sepete Eklendi",{
+        position: ToastrPosition.TopLeft,
+        messageType: ToastrMessageType.Success
+      });
+    }).catch(_ => {
+      this.hideSpinner(SpinnerType.BallScaleMultiple);
+    });
+  }
 
 
   async ngOnInit() {
@@ -89,6 +115,7 @@ export class ListComponent implements OnInit {
         }
       }
     });
+
   }
 
 }

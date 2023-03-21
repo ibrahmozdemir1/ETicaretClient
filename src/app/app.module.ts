@@ -18,52 +18,53 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './ui/components/login/login.component';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
+import { ComponentsModule } from "./ui/components/components.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AdminModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    ToastrModule.forRoot(),
-    NgxSpinnerModule,
-    HttpClientModule,
-    DialogModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: () => localStorage.getItem("accessToken"),
-        allowedDomains: ["localhost:4200"]
-      }
-    }),
-    SocialLoginModule
-  ],
-  providers: [
-    {provide: "baseUrl", useValue: "https://localhost:7220/api", multi: true},
-    {
-      provide: "SocialAuthServiceConfig",
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider("931015763799-7hccsrbn01s9f3qrgnr3ianst60ea08b.apps.googleusercontent.com")
-          },
-          {
-            id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider("1378991189510499")
-          }
-        ],
-        onError: err => console.log(err)
-      } as SocialAuthServiceConfig
-    },
-    {provide: HTTP_INTERCEPTORS,useClass: HttpErrorHandlerInterceptorService, multi:true}
-  ],
-  bootstrap: [AppComponent],
-
+    declarations: [
+        AppComponent,
+        LoginComponent
+    ],
+    providers: [
+        { provide: "baseUrl", useValue: "https://localhost:7220/api", multi: true },
+        {
+            provide: "SocialAuthServiceConfig",
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider("931015763799-7hccsrbn01s9f3qrgnr3ianst60ea08b.apps.googleusercontent.com")
+                    },
+                    {
+                        id: FacebookLoginProvider.PROVIDER_ID,
+                        provider: new FacebookLoginProvider("1378991189510499")
+                    }
+                ],
+                onError: err => console.log(err)
+            } as SocialAuthServiceConfig
+        },
+        { provide: HTTP_INTERCEPTORS, useClass: HttpErrorHandlerInterceptorService, multi: true }
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        AdminModule,
+        BrowserAnimationsModule,
+        MatSliderModule,
+        ToastrModule.forRoot(),
+        NgxSpinnerModule,
+        HttpClientModule,
+        DialogModule,
+        UiModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: () => localStorage.getItem("accessToken"),
+                allowedDomains: ["localhost:4200"]
+            }
+        }),
+        SocialLoginModule,
+    ],
 })
 export class AppModule { }

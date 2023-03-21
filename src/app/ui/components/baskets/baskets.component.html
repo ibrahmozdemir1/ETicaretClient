@@ -1,1 +1,36 @@
-<p>baskets works!</p>
+<!-- Modal -->
+
+  <div class="card mb-3" style="width: 90%;border-radius: 5; margin: 10px; border-right: 3px solid black; border-left: 3px solid black;">
+    <div class="card-body">
+      <div class="card-header" style="left: 35px;position: relative;">
+        <h1 class="card-title fs-5" id="exampleModalLabel">Alışveriş Sepeti</h1>
+      </div>
+      <div class="card-body text-center" style="width: 85%;left: 50px;position: fixed;">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Ürün</th>
+              <th scope="col">Fiyat</th>
+              <th scope="col">Adet</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let basketItem of basketItems;let i = index">
+              <th scope="row">{{i+1}}</th>
+              <td>{{basketItem.name}}</td>
+              <td>{{basketItem.price}}</td>
+              <td>
+                <input type="number" [value]="basketItem.quantity" style="width: 120px;" data-id="{{basketItem.basketItemId}}" (change)="changeQuantity($event)"/>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div class="footer" style="display: flex; justify-content: right; align-items: right; top: 80px;position: relative;">
+        <button type="button" class="btn btn-success">Alışverişi Tamamla</button>
+      </div>
+    </div>
+  </div>
+
